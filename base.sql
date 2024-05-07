@@ -69,7 +69,28 @@ VALUES
 /*!40000 ALTER TABLE `departments` ENABLE KEYS */;
 UNLOCK TABLES;
 
+# ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `employees`;
+
+CREATE TABLE `employees` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `company_id` int(11) unsigned NOT NULL, 
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOCK TABLES `employees` WRITE;
+
+INSERT INTO `employees` (`id`, `name`, `company_id`)
+VALUES
+	(1,'Alex',1),
+	(2,'Jacek',2),  
+	(3,'Adam',1);
+
+UNLOCK TABLES;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
