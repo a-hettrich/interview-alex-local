@@ -53,7 +53,7 @@ def get_companies():
     })
 
 
-@app.route('/companies', methods=['POST'])
+@app.route('/add_companies', methods=['POST'])
 def add_company():
     name = request.json.get('name')
     if name is None:
@@ -62,6 +62,21 @@ def add_company():
     new_company = Company()
     new_company.name = name
     db.session.add(new_company)
+    db.session.commit()
+    return "ASdfwf", 201
+
+@app.route('/add_employee', methods=['POST'])
+def add_employee():
+    name = request.json.get('name')
+    companyId = request.json.get('company_id')
+    if name is None:
+        return 400, "Name is required"
+
+    new_employee = Employee()
+    new_employee.name = name
+    # new_employee.company = Company(id=int(companyId))
+    new_employee.company = Company.query.get(int(companyId))
+    db.session.add(new_employee)
     db.session.commit()
     return "ASdfwf", 201
 
