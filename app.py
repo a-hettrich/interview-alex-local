@@ -32,6 +32,14 @@ class Department(db.Model):
     company_id = db.Column(db.ForeignKey('companies.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     company = db.relationship('Company', backref=db.backref('departments', passive_deletes=True))
 
+class Employee(db.Model):
+    __tablename__ = 'employees'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+
+    company_id = db.Column(db.ForeignKey('companies.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    company = db.relationship('Company', backref=db.backref('employees', passive_deletes=True))
+
 @app.route('/companies')
 def get_companies():
     companies = db.session.query(Company).all()
@@ -39,11 +47,13 @@ def get_companies():
         'objects': [{
             'id': company.id,
             'name': company.name,
-            'departments': ', '.join([dep.name for dep in company.departments])
+            'departments': ', '.join([dep.name for dep in company.departments]),
+            'employees': ', '.join([emp.name for emp in company.employees])
         } for company in companies]
     })
 
-@app.route('/companies', methods=['POST'])
+
+@app.route('/add_companies', methods=['POST'])
 def add_company():
     name = request.json.get('name')
     if name is None:
@@ -52,6 +62,21 @@ def add_company():
     new_company = Company()
     new_company.name = name
     db.session.add(new_company)
+    db.session.commit()
+    return "ASdfwf", 201
+
+@app.route('/add_employee', methods=['POST'])
+def add_employee():
+    name = request.json.get('name')
+    companyId = request.json.get('company_id')
+    if name is None:
+        return 400, "Name is required"
+
+    new_employee = Employee()
+    new_employee.name = name
+    # new_employee.company = Company(id=int(companyId))
+    new_employee.company = Company.query.get(int(companyId))
+    db.session.add(new_employee)
     db.session.commit()
     return "ASdfwf", 201
 

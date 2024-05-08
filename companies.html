@@ -2,13 +2,16 @@ Companies
 <table>
   <tr>
     <th>ID</th>
-    <th>Name</th>
+    <th>Company Name</th>
     <th>Departments</th>
+    <th>Employees</th>
   </tr>
   <tr ng-repeat="company in companies">
     <td>{{company.id}}</td>
     <td>{{company.name}}</td>
     <td>{{company.departments}}</td>
+    <td>{{company.employees}}</td>
   </tr>
 </table>
-New Company Name: <input ng-model="newName" type="test" name="company_name"> <button ng-click="addCompany()">Add</button>
+New Company Name: <input ng-model="company_name" type="test" name="company_name"> <button ng-click="addCompany()">Add</button>
+Employee Name: <input ng-model="employee_name" type="test" name="employee_name">Company ID: <input ng-model="company_id" type="test" name="company_id"><button ng-click="addEmployee()">Add</button>

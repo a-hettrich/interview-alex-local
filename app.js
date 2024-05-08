@@ -21,10 +21,17 @@ app.controller('companiesCtrl', ['$scope', '$http', function companiesCtrl($scop
     
 
     $scope.addCompany = function(){
-        $http.post('http://127.0.0.1:5006/companies', {name: $scope.newName}).then(function(response){
+        $http.post('http://127.0.0.1:5006/add_companies', {name: $scope.company_name}).then(function(response){
             getCompanies()
         })
     }
+
+    $scope.addEmployee = function(){
+        $http.post('http://127.0.0.1:5006/add_employee', {name: $scope.employee_name,company_id:$scope.company_id}).then(function(response){
+            getCompanies()
+        })
+    }
+    
 
     getCompanies()
 }]);
